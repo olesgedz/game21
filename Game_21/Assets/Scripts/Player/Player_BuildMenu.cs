@@ -21,6 +21,7 @@ public class Player_BuildMenu : MonoBehaviour
 		if (menuOpen && Input.GetKeyDown(KeyCode.Alpha1)) {
 			menuOpen = false;
 			g_r.setGrid(false);
+			Destroy(currentTower);
 		} else if (!menuOpen && Input.GetKeyDown(KeyCode.Alpha1)) {
 			menuOpen = true;
 			g_r.setGrid(true);

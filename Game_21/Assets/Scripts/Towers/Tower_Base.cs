@@ -11,11 +11,13 @@ public class Tower_Base : MonoBehaviour
 	private SpriteRenderer sr;
 	private bool colPresent = false;
 	private Camera cam;
+	private Collider2D myCol;
 
-	void Start() {
+	public virtual void Start() {
 		sr = GetComponent<SpriteRenderer>();
 		sr.color = blueprintColor;
 		sr.sortingOrder = 500;
+		myCol = GetComponent<Collider2D>();
 		cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 	}
 
@@ -23,6 +25,7 @@ public class Tower_Base : MonoBehaviour
 		isBuilt = true;
 		sr.sortingOrder = 0;
 		sr.color = Color.white;
+		myCol.isTrigger = false;
 		Debug.Log("A tower has been built!");
 	}
 
@@ -35,7 +38,7 @@ public class Tower_Base : MonoBehaviour
 		}
 	}
 
-	void preBuiltUpdate() {
+	void preBuildUpdate() {
 		Vector3 pos = Input.mousePosition;
 		pos = cam.ScreenToWorldPoint(pos);
 		pos = new Vector3(sizeOnGrid.x % 2 == 1 ? Mathf.Round(pos.x) : Mathf.Ceil(pos.x) - 0.5f, sizeOnGrid.y % 2 == 1 ? Mathf.Round(pos.y) : Mathf.Ceil(pos.y) - 0.5f, 0f);
@@ -47,21 +50,25 @@ public class Tower_Base : MonoBehaviour
 		}
 	}
 
-	void Update() {
+	public virtual void Update() {
 		if (!isBuilt) {
-			preBuiltUpdate();
+			preBuildUpdate();
 		}
 	}
 
-	void OnTriggerStay2D(Collider2D col) {
-		if (col.tag == "Tower" || col.tag == "Ground") {
-			colPresent = true;
+	public virtual void OnTriggerStay2D(Collider2D col) {
+		if (!isBuilt) {
+			if (col.tag == "Tower" || col.tag == "Ground") {
+				colPresent = true;
+			}
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D col) {
-		if (col.tag == "Tower" || col.tag == "Ground") {
-			colPresent = false;
+	public virtual void OnTriggerExit2D(Collider2D col) {
+		if (!isBuilt) {
+			if (col.tag == "Tower" || col.tag == "Ground") {
+				colPresent = false;
+			}
 		}
 	}
 }
