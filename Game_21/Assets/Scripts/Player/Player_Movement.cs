@@ -6,12 +6,12 @@ public class Player_Movement : MonoBehaviour
 {
 	public float velocity = 5f;
 	private Rigidbody2D rb;
-
+	
 	void Start() {
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-    void Update() {
+	void Update() {
 		Vector2 dir = Vector2.zero;
 		if (Input.GetKey(KeyCode.D))
 			dir.x++;
@@ -23,4 +23,5 @@ public class Player_Movement : MonoBehaviour
 			dir.y--;
 		rb.velocity = dir.normalized * velocity;
 	}
+
 }
