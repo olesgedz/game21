@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Unit : MonoBehaviour {
 
-	public Transform target;
+	private Transform target;
 	[SerializeField]float speed = 20;
 	Vector3[] path;
 	int targetIndex;
@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	void Start() {
+		target = GameObject.Find("Nexus").transform;
 		ReCalcPath();
 		rb = GetComponent<Rigidbody2D>();
 	}
