@@ -6,6 +6,16 @@ public class Player_Movement : MonoBehaviour
 {
 	public float velocity = 5f;
 	private Rigidbody2D rb;
+	enum direction {
+		top,
+		top_left,
+		top_right,
+		left,
+		right,
+		bottom_right,
+		bottom_left,
+		buttom
+	}
 
 	void Start() {
 		rb = GetComponent<Rigidbody2D>();
