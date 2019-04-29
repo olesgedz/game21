@@ -7,10 +7,30 @@ public class Unit : MonoBehaviour {
 	[SerializeField]float speed = 20;
 	Vector3[] path;
 	int targetIndex;
-	// Rigidbody2D rb;
+	Rigidbody2D rb;
+	float waypointMargin = 0.08f;
+	public bool dead = false;
+
+	public void ReCalcPath() {
+		PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+	}
 
 	void Start() {
-		PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+		ReCalcPath();
+		rb = GetComponent<Rigidbody2D>();
+	}
+
+	void Movement(Vector3 wp) {
+		if (!dead) {
+			Vector3 dir = wp - transform.position;
+			rb.velocity = dir.normalized * speed;
+		} else {
+			rb.velocity = Vector3.zero;
+		}
+	}
+
+	void MovementEnd() {
+		rb.velocity = Vector3.zero;
 	}
 
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
@@ -25,15 +45,16 @@ public class Unit : MonoBehaviour {
 	IEnumerator FollowPath() {
 		Vector3 currentWaypoint = path[0];
 		while (true) {
-			if (transform.position == currentWaypoint) {
+			if (Vector3.Distance(transform.position, currentWaypoint) <= waypointMargin) {
 				targetIndex++;
 				if (targetIndex >= path.Length) {
+					MovementEnd();
 					yield break;
 				}
 				currentWaypoint = path[targetIndex];
 			}
-			// rb.velocity = 
-			transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+			Movement(currentWaypoint);
+			// transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
 			yield return null;
 
 		}

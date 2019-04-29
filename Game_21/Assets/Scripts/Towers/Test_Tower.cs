@@ -4,75 +4,23 @@ using UnityEngine;
 
 public class Test_Tower : Tower_Base
 {
-    public float rpm;
-	private List<GameObject> targetList;
-	private GameObject target;
-	private float timer;
 	[SerializeField]private int damage = 1;
-	[SerializeField]private float radius = 3f;
-	private CircleCollider2D cirCol;
 	public Color testPewColor;
 	public float pewDuration = 0.3f;
+	private bool drawPew = false;
+	private Vector3 targetPos;
 
-	public override void Start() {
-		base.Start();
-		targetList = new List<GameObject>();
-	}
-
-	public override void OnBuild() {
-		base.OnBuild();
-		cirCol = gameObject.AddComponent<CircleCollider2D>();
-		cirCol.radius = radius;
-		cirCol.isTrigger = true;
-	}
-
-	void postBuildUpdate() {
-		if (isBuilt && Time.time > timer + 60 / rpm) {
-			timer = Time.time;
-			if (targetList.Count == 0) {
-				return;
-			}
-			target = targetList[0];
-			StartCoroutine("pewHandle");
-			int ret = target.GetComponent<g_Health>().damage(damage);
-			targetPos = target.transform.position;
-			if (ret <= 0) {
-				targetList.Remove(target);
-			}
-		}
+	public override int Shoot(GameObject target) {
+		int res = target.GetComponent<g_Health>().damage(damage);
+		targetPos = target.transform.position;
+		StartCoroutine("pewHandle");
+		return res;
 	}
 
 	IEnumerator pewHandle() {
 		drawPew = true;
 		yield return new WaitForSeconds(pewDuration);
 		drawPew = false;
-	}
-
-	public override void Update() {
-		base.Update();
-		if (isBuilt) {
-			postBuildUpdate();
-		}
-	}
-
-    void OnTriggerEnter2D(Collider2D col) {
-		if (isBuilt) {
-			if (col.tag == "Enemy") {
-				targetList.Add(col.gameObject);
-			}
-		}
-	}
-	public override void OnTriggerStay2D(Collider2D col) {
-		base.OnTriggerStay2D(col);
-	}
-
-	public override void OnTriggerExit2D(Collider2D col) {
-		base.OnTriggerExit2D(col);
-		if (isBuilt) {
-			if (col.tag == "Enemy") {
-				targetList.Remove(col.gameObject);
-			}
-		}
 	}
 
 	// FIXME dirty pew render
@@ -96,8 +44,6 @@ public class Test_Tower : Tower_Base
         }
     }
 
-	private bool drawPew = false;
-	private Vector3 targetPos;
 
 	public void OnRenderObject()
     {
