@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Tower_Base : MonoBehaviour
 {
 	public Vector2 sizeOnGrid;
@@ -20,7 +19,7 @@ public class Tower_Base : MonoBehaviour
 	private GameObject target;
 	private float timer;
 	private CircleCollider2D cirCol;
-
+	
 	void Start() {
 		sr = GetComponent<SpriteRenderer>();
 		sr.color = blueprintColor;

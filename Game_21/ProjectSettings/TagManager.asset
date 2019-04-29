@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Tower
   - Nexus
+  - Projectile
   layers:
   - Default
   - TransparentFX

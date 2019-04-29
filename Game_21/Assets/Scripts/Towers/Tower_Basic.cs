@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_Tower : Tower_Base
+public class Tower_Basic : Tower_Base
 {
 	[SerializeField]private int damage = 1;
 	public Color testPewColor;

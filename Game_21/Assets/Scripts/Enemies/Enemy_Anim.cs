@@ -31,6 +31,6 @@ public class Enemy_Anim : MonoBehaviour
 
 	public void deathAnim() {
 		anim.SetBool("Dead", true);
-		// GetComponent<Unit>().dead = true;
+		GetComponent<Unit>().dead = true;
 	}
 }
