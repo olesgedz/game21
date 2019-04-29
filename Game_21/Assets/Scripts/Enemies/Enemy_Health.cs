@@ -12,10 +12,18 @@ public class Enemy_Health : g_Health
 	}
 
     public override void death() {
+<<<<<<< HEAD
 		GetComponent<Enemy_Anim>().deathAnim();
 		GetComponent<Unit>().dead = true;
 		GetComponent<Collider2D>().enabled = false;
 		StartCoroutine("waitForDespawn");
+=======
+		// GetComponent<Enemy_Anim>().deathAnim();
+		// GetComponent<Unit>().dead = true;
+
+		// GetComponent<Collider2D>().enabled = false;
+		// StartCoroutine("waitForDespawn");
+>>>>>>> jblack-b
 		// Destroy(gameObject);
 	}
 }
